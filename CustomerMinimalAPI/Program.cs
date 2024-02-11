@@ -10,7 +10,6 @@ using Customer.BusinessLogic.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<CustomerDb>(opt => opt.UseInMemoryDatabase("CustomersMinimal"));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddSingleton<IApiKeyValidation, ApiKeyValidation>();
 builder.Services.AddMappings();
 builder.Services.AddEndpointsApiExplorer();

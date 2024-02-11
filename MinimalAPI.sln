@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerWebAPI", "CustomerW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerMinimalAPI", "CustomerMinimalAPI\CustomerMinimalAPI.csproj", "{CCEDB9BE-F00E-4416-8BB4-BF516E57D3C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customer.BusinessLogic", "Customer.BusinessLogic\Customer.BusinessLogic.csproj", "{5D1B31B0-AB37-49D7-AA74-E85982BC6460}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customer.BusinessLogic", "Customer.BusinessLogic\Customer.BusinessLogic.csproj", "{5D1B31B0-AB37-49D7-AA74-E85982BC6460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
