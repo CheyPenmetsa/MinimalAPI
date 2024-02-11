@@ -1,9 +1,13 @@
 ﻿using Customer.BusinessLogic;
 using Customer.BusinessLogic.DTOs;
+using FluentValidation;
+using FluentValidation.Results;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CustomerWebAPI.Controllers
 {
@@ -12,16 +16,21 @@ namespace CustomerWebAPI.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly CustomerDb _context;
+        
         private readonly IMapper _mapper;
 
-        public CustomerController(CustomerDb context, IMapper mapper)
+        private IValidator<UpsertCustomerDto> _validator;
+
+        public CustomerController(CustomerDb context, IMapper mapper, IValidator<UpsertCustomerDto> validator)
         {
             _context = context;
             _mapper = mapper;
+            _validator = validator;
         }
 
         // GET: api/customer
         [HttpGet]
+        [ApiKey]
         public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers()
         {
             return await _context.Customers
@@ -31,6 +40,7 @@ namespace CustomerWebAPI.Controllers
 
         // GET: api/customer/1
         [HttpGet("{id}", Name = "GetCustomerById")]
+        [Authorize(Policy ="ApiKeyPolicy")]
         public async Task<ActionResult<CustomerDto>> GetCustomerById([FromRoute] int id)
         {
             var customerEntity = await _context.Customers.FindAsync(id);
@@ -71,6 +81,13 @@ namespace CustomerWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> PostCustomer([FromBody]UpsertCustomerDto upsertCustomerDto)
         {
+            ValidationResult result = await _validator.ValidateAsync(upsertCustomerDto);
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result);
+            }
+
             var customerEntity = _mapper.Map<CustomerEntity>(upsertCustomerDto);
             var currentCount = await _context.Customers.CountAsync();
             customerEntity.Id = currentCount + 1;
